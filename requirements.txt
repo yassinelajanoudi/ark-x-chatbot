@@ -1,0 +1,6 @@
+langchain
+faiss-cpu
+streamlit
+langchain-google-genai
+google-generativeai
+langchain_community
