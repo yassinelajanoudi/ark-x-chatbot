@@ -2,20 +2,18 @@ from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import CSVLoader
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
-from langchain_google_genai import GoogleGenerativeAI
-from langchain_community.embeddings import GooglePalmEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings, GoogleGenerativeAI
 import os
 import streamlit as st
-import os.path
 
 # Set the Google API key
-os.environ['GOOGLE_API_KEY'] = 'AIzaSyAv5jmX3j3utT5ewZXAmJEf-ShG3eurDuU'
+os.environ['GOOGLE_API_KEY'] = 'AIzaSyCymTxBfrllPVy5b9b4wt5p1OzIgbtgAQ4'
 
-# Create Google Palm LLM model
-llm = GoogleGenerativeAI(model="models/text-bison-001", google_api_key=os.environ['GOOGLE_API_KEY'], temperature=0.1)
+# Create Google Gemini LLM model
+llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=os.environ['GOOGLE_API_KEY'], temperature=0.1)
 
-# Initialize instructor embeddings using GooglePalmEmbeddings
-instructor_embeddings = GooglePalmEmbeddings()
+# Initialize embeddings using GoogleGenerativeAIEmbeddings for Gemini
+instructor_embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 
 # Define the vector database file path
 vectordb_file_path = "faiss_index"
@@ -74,7 +72,7 @@ question = st.text_input("Question: ")
 
 if question:
     chain = get_qa_chain()
-    response = chain(question)
+    response = chain.invoke(question)
 
     st.header("Answer")
     st.write(response["result"])
